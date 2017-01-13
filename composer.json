@@ -1,4 +1,19 @@
 {
+ "name": "xqus/pgpTools",
+ "type": "library",
+ "description": "Lookup and manage PGP keys from keyservers",
+ "keywords": [
+     "PGP",
+     "keyserver"
+     ],
+ "license": "MIT",
+ "authors": [
+     {
+         "name": "Audun Larsen",
+         "email": "larsen@xqus.com",
+         "role": "Developer"
+     }
+ ],
     "require": {
       "guzzlehttp/guzzle": "6.2.*"
     },
