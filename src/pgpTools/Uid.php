@@ -6,7 +6,7 @@ class Uid {
 
   var $raw = null;
 
-  function __construct(string $raw) {
+  function __construct($raw) {
     $this->raw = $raw;
   }
 
