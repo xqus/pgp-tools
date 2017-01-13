@@ -25,14 +25,18 @@ class Lookup {
           'uids'        => array(),
         );
       } elseif($parts[0] == 'uid') {
-        $keys[$keyid]['uids'][] = array(
-          'uid' => $parts[1],
-        );
-
+        $keys[$keyid]['uids'][] = $parts[1];
       }
+
     }
 
-    return $keys;
+    foreach($keys as $key) {
+      $keyObj[] = new Publickey($key);
+
+
+    }
+
+    return $keyObj;
   }
 
 
@@ -50,31 +54,20 @@ class Lookup {
 
     );
 
+    $client = new \GuzzleHttp\Client();
 
-    /* Convert the array with data to a request string. */
-    $query = http_build_query($data);
-    /* Set up array with options for the context used by file_get_contents(). */
-    $opts = array(
-      'http'=>array(
-        'method'  => 'GET',
-        'timeout' => 2,
-        'header'  => "Accept-language: en\r\n" .
-                     "User-Agent: whoop\r\n"
-      )
-    );
-    /* Create context. */
-    $context = stream_context_create($opts);
-    /* Try to get response from key server. */
-    $attempts = 0;
-    $response = false;
-    while($response === false && $attempts < 3) {
-      /* select a Yubico API server. */
-
-      $response = @file_get_contents('https://keys.drup.no/pks/lookup'.'?'.$query, null, $context);
-      $attempts++;
+    try {
+      $r = $client->request('GET', 'https://hkps.pool.sks-keyservers.net/pks/lookup', [
+        'verify' => __DIR__.'/../../sks-keyservers.netCA.pem',
+        'query' => $data,
+      ]);
+    } catch(\GuzzleHttp\Exception\ServerException $e) {
+      return false;
     }
 
-    return $response;
+    $response = $r->getBody();
+
+    return (string) $response;
   }
 
   function filter() {
