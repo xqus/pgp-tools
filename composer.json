@@ -1,5 +1,5 @@
 {
- "name": "xqus/pgpTools",
+ "name": "xqus/pgp-tools",
  "type": "library",
  "description": "Lookup and manage PGP keys from keyservers",
  "keywords": [
