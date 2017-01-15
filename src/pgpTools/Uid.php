@@ -2,15 +2,32 @@
 
 namespace xqus\pgpTools;
 
+/**
+ * @author    Audun Larsen <larsen@xqus.com>
+ * @copyright Copyright (c) Audun Larsen, 2017
+ * @link      https://github.com/xqus/pgp-tools
+ * @license   http://opensource.org/licenses/mit-license.php The MIT License
+ */
+
+ /**
+  * Provides object that represents user IDs.
+  */
 class Uid {
 
-  var $raw = null;
+  private var $raw = null;
 
-  function __construct($raw) {
+  /**
+   * Create the Uid object and define the raw UID string.
+   */
+  public function __construct($raw) {
     $this->raw = $raw;
   }
 
-  function name() {
+  /**
+   * Returns the name of the user ID.
+   * @return string
+   */
+  public function name() {
     $pos = strpos($this->raw, '(');
     if($pos === false) {
       $pos = strpos($this->raw, '<');
@@ -25,7 +42,11 @@ class Uid {
     return(substr($this->raw, 0, $pos));
   }
 
-  function comment() {
+  /**
+   * Returns the comment of the user ID.
+   * @return string
+   */
+  public function comment() {
     $start = strpos($this->raw, '(');
     $stop  = strpos($this->raw, ')');
 
@@ -36,7 +57,11 @@ class Uid {
     return false;
   }
 
-  function email() {
+  /**
+   * Returns the email of the user ID.
+   * @return string
+   */
+  public function email() {
     $start = strpos($this->raw, '<');
     $stop  = strpos($this->raw, '>');
 
