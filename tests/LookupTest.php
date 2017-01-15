@@ -16,7 +16,7 @@ class LookupTest extends TestCase {
 
     $this->assertEquals($key[0]->uids[0]->raw, 'Audun Larsen <xqus@drup.no>');
 
-    $this->assertFalse($lookup->find('0xnonexistingkey'));
+    $this->assertEquals(0, sizeof($lookup->find('0xnonexistingkey')));
 
     }
 

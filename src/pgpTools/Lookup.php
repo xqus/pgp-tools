@@ -2,15 +2,34 @@
 
 namespace xqus\pgpTools;
 
+/**
+ * @author    Audun Larsen <larsen@xqus.com>
+ * @copyright Copyright (c) Audun Larsen, 2017
+ * @link      https://github.com/xqus/pgp-tools
+ * @license   http://opensource.org/licenses/mit-license.php The MIT License
+ */
+
+/**
+ * Provides interface against SKS-Keyservers.
+ */
 class Lookup {
 
-  function find($search) {
+  /**
+   * Find a key on the SKS-Keyservers.
+   *
+   * @param string $search
+   *   String to search for, can be email, name, keyid or fingerprint.
+   *
+   * @return array
+   *  Returns an array containing xqus\pgpTools\Publickey objects
+   */
+  public function find($search) {
     $keys = array();
 
     $result = $this->doSearch($search);
 
     if($result === false) {
-      return false;
+      return array();
     }
 
     foreach(preg_split("/((\r?\n)|(\r\n?))/", $result) as $line) {
@@ -27,24 +46,24 @@ class Lookup {
       } elseif($parts[0] == 'uid') {
         $keys[$keyid]['uids'][] = $parts[1];
       }
-
     }
 
     foreach($keys as $key) {
       $keyObj[] = new Publickey($key);
-
-
     }
 
     return $keyObj;
   }
 
-
-  function all() {
-
-  }
-
-  function doSearch($search) {
+  /**
+   * Connect to SKS-Keyservers and search for a key. Returns raw response from
+   * the keyserver.
+   *
+   * @param string $search
+   *
+   * @return string
+   */
+  private function doSearch($search) {
     $data = array(
       'op'          => 'vindex',
       'options'     => 'mr',
@@ -70,7 +89,4 @@ class Lookup {
     return (string) $response;
   }
 
-  function filter() {
-
-  }
 }
