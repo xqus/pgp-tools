@@ -14,7 +14,7 @@ namespace xqus\pgpTools;
   */
 class Uid {
 
-  private var $raw = null;
+  private $raw = null;
 
   /**
    * Create the Uid object and define the raw UID string.
